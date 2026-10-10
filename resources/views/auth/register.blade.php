@@ -27,7 +27,25 @@
                                 <img src="{{ asset('iconos/diente.png') }}" alt=""> Consultorio dental
                             </h1>
 
+                            <p class="text-muted">
+                                Crear cuenta del dentista
+                            </p>
+
                         </div>
+
+                        <form action="">
+
+                            <div class="mb-3">
+
+                                <label for="name" class="form-label">
+                                    Nombre
+                                </label>
+
+
+
+                            </div>
+
+                        </form>
 
                     </div>
 
