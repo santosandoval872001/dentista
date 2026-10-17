@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Crear cita 
+// Crear cita
 Route::get('/cita', [CitaController::class, 'crear'])
     ->name('cita.crear');
 
@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('dentista')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -48,13 +48,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/citas/{cita}/whatsapp', [CitaController::class, 'whatsapp'])
         ->name('admin.citas.whatsapp');
 
-    // Cancelar la cita 
+    // Cancelar la cita
     Route::patch('/admin/citas/{cita}/cancelar', [CitaController::class, 'cancelar'])
         ->name('admin.citas.cancelar');
 
-    // Atender cita 
+    // Atender cita
     Route::patch('/admin/citas/{cita}/atender', [CitaController::class, 'atender'])
         ->name('admin.citas.atender');
+
+    /* Calendario de citas  */
+    Route::get('/admin/calendario', function () {
+        return view('citas.calendario');
+    })->name('admin.calendario');
+
+    /* Obtener las rutas de las citas */
+    Route::get('/admin/calendario/eventos', [CitaController::class, 'eventos'])
+        ->name('admin.calendario.eventos');
 });
 
 require __DIR__ . '/auth.php';

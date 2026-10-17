@@ -42,6 +42,36 @@
             </div>
         @endif
 
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+
+            <div class="">
+
+                <h2 class="mb-1">
+                    Panel del dentista
+                </h2>
+                <p class="text-secondary mb-0">
+                    Bienvenido, Dr. {{ Auth::user()->name }}
+                </p>
+
+            </div>
+
+            <a href="{{ route('admin.calendario') }}" class="btn btn-primary">
+                <i class="bi bi-calendar-week me-1"></i>
+                ver calendario
+            </a>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="bi bi-box-arrow-right me-1"></i>
+                    Cerrar sesión
+                </button>
+
+            </form>
+
+        </div>
+
         {{--  Citas  --}}
         <div class="card border-0 shadow-sm rounded-4">
 
@@ -177,7 +207,7 @@
                                                     </a>
 
                                                     <form action="{{ route('admin.citas.atender', $cita) }}"
-                                                        class="d-line" method="PATCH">
+                                                        class="d-line" method="POST">
                                                         @csrf
                                                         @method('PATCH')
 

@@ -111,4 +111,31 @@ class CitaController extends Controller
             ->route('admin.citas')
             ->with('success', 'La cita fue marcada como atendida');
     }
+
+    public function eventos()
+    {
+
+        $citas = \App\Models\Cita::all();
+
+        $eventos = $citas->map(function ($cita) {
+            $colores = [
+                'pendiente' => '#ffc107',
+                'confirmado' => '#198754',
+                'cancelado' => '#dc3545',
+                'atendida' => '#0d6efd',
+            ];
+
+            return [
+                'id' => $cita->id,
+                'title' => $cita->nombre . ' - ' . $cita->servicio,
+                'start' => $cita->fecha . 'T' . $cita->hora,
+                'color' => $colores[$cita->estado] ?? '#6c757d',
+                'nombre' => $cita->nombre,
+                'servicio' => $cita->servicio,
+                'estado' => $cita->estado,
+            ];
+        });
+
+        return response()->json($eventos);
+    }
 }
