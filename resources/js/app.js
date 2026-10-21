@@ -3,7 +3,7 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 
 window.Alpine = Alpine;
 
@@ -66,7 +66,46 @@ document.addEventListener('DOMContentLoaded', function () {
         eventClick: function (info) {
             const cita = info.event;
 
-            
+            document.getElementById('detallePaciente').textContent =
+                cita.extendedProps.nombre || cita.title;
+
+            document.getElementById('detalleFecha').textContent =
+                cita.start
+                    ? cita.start.toLocaleDateString('es-MX')
+                    : 'No disponible';
+
+            document.getElementById('detalleHora').textContent =
+                cita.start
+                    ? cita.start.toLocaleTimeString('es-MX', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })
+                : 'No disponible'
+
+            document.getElementById('detalleServicio').textContent =
+                cita.extendedProps.servicio || 'No disponible';
+
+            const estado = cita.extendedProps.estado || 'pendiente';
+
+            const etiquetaEstado = document.getElementById('detalleEstado');
+
+            etiquetaEstado.textContent =
+                estado.charAt(0).toUpperCase() + estado.slice(1);
+
+            const coloresEstado = {
+                pendiente: 'text-bg-warning',
+                confirmado: 'text-bg-primary',
+                cancelado: 'text-bg-danger',
+                atendida: 'text-bg-success',
+            };
+
+            etiquetaEstado.className = 'badge ' + (coloresEstado[estado] || 'text-bg-secondary');
+
+            const modal = bootstrap.Modal.getOrCreateInstance(
+                document.getElementById('modalDentallesCita')
+            );
+
+            modal.show();
         },
 
 
