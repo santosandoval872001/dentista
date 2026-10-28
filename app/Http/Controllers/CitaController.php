@@ -138,4 +138,23 @@ class CitaController extends Controller
 
         return response()->json($eventos);
     }
+
+    public function confirmarDesdeCalendario(Cita $cita)
+    {
+
+        if ($cita->estado !== 'pendiente') {
+            return response()->json([
+                'mensaje' => 'Solo se pueden confirmar citas pendientes.'
+            ], 422);
+        }
+
+        $cita->estado = 'confirmado';
+        $cita->save();
+
+        return response()->json([
+            'mensaje' => 'La cita se confirmó correctamente.',
+            'estado' => $cita->estado,
+            'id' => $cita->id,
+        ]);
+    }
 }

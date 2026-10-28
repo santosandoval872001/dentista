@@ -1,4 +1,5 @@
 import './bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import Alpine from 'alpinejs';
 
@@ -80,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         hour: '2-digit',
                         minute: '2-digit'
                     })
-                : 'No disponible'
+                    : 'No disponible';
 
             document.getElementById('detalleServicio').textContent =
                 cita.extendedProps.servicio || 'No disponible';
@@ -101,8 +102,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
             etiquetaEstado.className = 'badge ' + (coloresEstado[estado] || 'text-bg-secondary');
 
+            const botonConfirmar = document.getElementById('btnConfirmarCita');
+
+            //Guardar el id de la cita seleccionada
+            botonConfirmar.dataset.citaId = cita.id;
+
+            //Mostrar el botón solo para citas pendientes
+            botonConfirmar.style.display =
+                cita.extendedProps.estado === 'pendiente'
+                    ? 'inline-block'
+                    : 'none';
+
             const modal = bootstrap.Modal.getOrCreateInstance(
-                document.getElementById('modalDentallesCita')
+                document.getElementById('modalDetallesCita')
             );
 
             modal.show();
@@ -137,6 +149,52 @@ document.addEventListener('DOMContentLoaded', function () {
         }
             });
 
-            calendario.render();
+    calendario.render();
+
+    const botonConfirmar = document.getElementById('btnConfirmarCita');
+
+    botonConfirmar.addEventListener('click', async function () {
+        const citaId = this.dataset.citaId;
+
+        if (!citaId) {
+            return;
+        }
+
+        this.disabled = true;
+
+        try {
+            const respuesta = await fetch(
+                `/admin/calendario/${citaId}/confirmar`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector(
+                            'meta[name="csrf-token"]'
+                        ).content
+                    }
+                }
+            );
+
+            const resultado = await respuesta.json();
+
+            if (!respuesta.ok) {
+                throw new Error(resultado.mensaje || 'No se pudo confirmar la cita.');
+            }
+
+            alert(resultado.mensaje);
+
+            bootstrap.Modal.getInstance(
+                document.getElementById('modalDetallesCita')
+            ).hide();
+
+            calendario.refetchEvents();
+
+        } catch (error) {
+            alert(error.message);
+        } finally { 
+            this.disabled = false;
+        }
+    });
 
 })

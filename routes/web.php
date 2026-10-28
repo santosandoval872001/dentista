@@ -64,6 +64,10 @@ Route::middleware('dentista')->group(function () {
     /* Obtener las rutas de las citas */
     Route::get('/admin/calendario/eventos', [CitaController::class, 'eventos'])
         ->name('admin.calendario.eventos');
+
+    // Confirmar una cita
+    Route::patch('/admin/calendario/{cita}/confirmar', [CitaController::class, 'confirmarDesdeCalendario'])
+        ->name('admin.calendario.confirmar');
 });
 
 require __DIR__ . '/auth.php';

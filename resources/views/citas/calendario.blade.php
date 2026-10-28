@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div id="calendario"></div>
 
-                <div class="modal fade" id="modalDentallesCita" tabindex="-1" aria-labelledby="tituloModalCita"
+                <div class="modal fade" id="modalDetallesCita" tabindex="-1" aria-labelledby="tituloModalCita"
                     aria-hidden="true">
 
                     <div class="modal-dialog modal-dialog-centered">
@@ -54,6 +54,17 @@
                             </div>
 
                             <div class="modal-footer">
+
+                                <button type="button" class="btn btn-success" id="btnConfirmarCita">
+                                    <i class="bi bi-check-circle"></i>
+                                    Confirmar cita
+                                </button>
+
+                                <button type="button" class="btn btn-danger" id="btnCancelarCita">
+                                    <i class="bi bi-x-circle"></i>
+                                    Cancelar cita
+                                </button>
+
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                     Cerrar
                                 </button>
